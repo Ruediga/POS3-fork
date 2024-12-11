@@ -2,17 +2,21 @@ package formen;
 
 import java.awt.*;
 
-public class Raute extends Rechteck {
-
-	public Raute(int x, int y, int width, int height) {
-		super(x, y, width, height);
+public class Raute extends Rechteck{
+	protected int width;
+	protected int height;
+	public Raute(int x, int y, int width, int height, Color color) {
+		super(x, y, width, height, color);
+		this.width = width;
+		this.height = height;
 	}
 
+	@Override
 	public void paint(Graphics g) {
-		// Zeichnen der Seiten des Trapezes
-		this.drawLine(g, x, y, x + width / 2, y - width / 2); // Linke Schräge
-		this.drawLine(g, x + width / 2, y - width / 2, x + width, y); // Obere horizontale Seite
-		this.drawLine(g, x + width, y, x + width / 2, y + width / 2); // Rechte Schräge
-		this.drawLine(g, x, y, x + width / 2, y + width / 2);  // Untere Seite
+		g.setColor(color);
+		this.drawLine(g, x  + width, y, x + 2 * width   , y + height/2 );
+		this.drawLine(g, x + 2 * width, y + height/2, x + width, y + 2 * height/2);
+		this.drawLine(g, x + width, y + 2 * height/2, x, y + height/2);
+		this.drawLine(g, x, y + height/2, x + width, y);
 	}
 }

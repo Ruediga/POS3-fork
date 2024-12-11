@@ -1,14 +1,21 @@
 package formen;
 
-public class Dreieck extends Polygon {
+import java.awt.*;
 
-	public Dreieck(int x, int y, int sides, int angle) {
-		super(x, y, sides, angle);
-		if (sides != 3) {
-			throw new IllegalArgumentException("A polygon must have 3 sides");
-		}
-		this.sides = sides;
-		this.angle = angle;
-		
+public class Dreieck extends Rechteck {
+	protected int width;
+	protected int height;
+	public Dreieck(int x, int y, int width, int height, Color color) {
+		super(x, y, width, height, color);
+		this.width = width;
+		this.height = height;
+	}
+
+	@Override
+	public void paint(Graphics g) {
+		g.setColor(color);
+		this.drawLine(g, x, y, x + width, y);
+		this.drawLine(g, x + width, y, x + width, y + height);
+		this.drawLine(g, x + width, y + height, x, y);
 	}
 }

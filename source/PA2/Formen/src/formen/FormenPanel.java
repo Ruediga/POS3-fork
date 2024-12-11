@@ -1,32 +1,61 @@
 package formen;
 
 import javax.swing.*;
-import java.awt.Graphics;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FormenPanel extends JPanel {
-	private final Form[] forms;
+	int count = 0;
+	private List<Form> formen = new ArrayList<>();
+	private Color selectedColor;
 
-	public FormenPanel() {
-		forms = new Form[10];
-		forms[0] = new Rechteck(100, 100, 200, 100);
-		forms[1] = new Quadrat(400, 100, 100);
-		forms[2] = new Trapez(600, 100, 200, 250, 100);
-		forms[3] = new Raute(900, 100, 100, 100);
-
-		forms[4] = new Polygon(200, 300, 7, 70);
-		forms[5] = new Sechseck(450, 300, 6, 60);
-		forms[6] = new Stern(700, 300, 9, 100, 50);
-		forms[7] = new Dreieck(950, 300, 3, 90);
-
-		forms[8] = new Ellipse(100, 400, 200, 100);
-		forms[9] = new Kreis(450, 400, 100, 100);
+	public void addForm(Form form) {
+		formen.add(form);
 	}
+
+	public void addRechteck(Point p) {
+		Rechteck rechteck = new Rechteck(p.x, p.y, 200, 100, selectedColor);
+		addForm(rechteck);
+		repaint();
+	}
+
+	public void addQuadrat(Point p) {
+		Quadrat quadrat = new Quadrat(p.x, p.y, 200, 100, selectedColor);
+		addForm(quadrat);
+		repaint();
+	}
+
+	public void addKreis(Point p) {
+		Kreis kreis = new Kreis(p.x, p.y, 100, 100, selectedColor);
+		addForm(kreis);
+		repaint();
+	}
+
+	public void addTrapez(Point p) {
+		Trapez trapez = new Trapez(p.x, p.y, 100, 100, selectedColor);
+		addForm(trapez);
+		repaint();
+	}
+
+	public void addRaute(Point p) {
+		Raute raute = new Raute(p.x, p.y, 100, 100, selectedColor);
+		addForm(raute);
+		repaint();
+	}
+
 
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
-		for (Form f : forms) {
-			if (f != null) f.paint(g);
+		for(Form f : formen)
+		{
+			if(f != null)
+				f.paint(g);
 		}
+	}
+
+	public void setColor(Color color) {
+		selectedColor = color;
 	}
 }

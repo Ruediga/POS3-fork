@@ -2,9 +2,7 @@ package formen;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.InputEvent;
+import java.awt.event.*;
 
 public class MainWindow extends JFrame {
 	private JPanel mainPanel;
@@ -17,85 +15,114 @@ public class MainWindow extends JFrame {
 		setContentPane(mainPanel);
 		setSize(800, 400);
 
+		JMenu fileMenu = new JMenu("Datei");
+		fileMenu.setMnemonic('D');
+		//formenPanel.add(fileMenu);
 		JMenuBar menuBar = new JMenuBar();
+		menuBar.add(fileMenu);
 		setJMenuBar(menuBar);
-
-		JMenu dateiMenu = new JMenu("Datei");
-		dateiMenu.setMnemonic('D');
-		menuBar.add(dateiMenu);
-		JMenuItem open = new JMenuItem("Open");
+		JMenuItem open = new JMenuItem("Öffnen");
 		open.setMnemonic('O');
 		open.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
+				JOptionPane.showMessageDialog(mainPanel, "Öffnen");
 			}
 		});
-		dateiMenu.add(open);
-		JMenuItem save = new JMenuItem("Save");
+		fileMenu.add(open);
+		JMenuItem save = new JMenuItem("Speichern");
 		save.setMnemonic('S');
+
 		save.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(mainPanel, "Save");
+				JOptionPane.showMessageDialog(mainPanel, "Speichern");
 			}
 		});
-		save.setAccelerator(KeyStroke.getKeyStroke('S', InputEvent.CTRL_DOWN_MASK));
-		dateiMenu.add(save);
+		save.setAccelerator(KeyStroke.getKeyStroke('S', InputEvent.ALT_DOWN_MASK + InputEvent.CTRL_DOWN_MASK));
+		fileMenu.add(save);
 
-		JMenu farbMenu = new JMenu("Farbe");
-		farbMenu.setMnemonic('F');
-		menuBar.add(farbMenu);
+		JRadioButtonMenuItem red = new JRadioButtonMenuItem("red");
+		fileMenu.add(red);
+		JRadioButtonMenuItem blue = new JRadioButtonMenuItem("blue");
+		fileMenu.add(blue);
+		JRadioButtonMenuItem green = new JRadioButtonMenuItem("green");
+		fileMenu.add(green);
+		JRadioButtonMenuItem yellow = new JRadioButtonMenuItem("yellow");
+		fileMenu.add(yellow);
+		JRadioButtonMenuItem pink = new JRadioButtonMenuItem("pink");
+		fileMenu.add(pink);
+		ButtonGroup farbenGroup = new ButtonGroup();
+		farbenGroup.add(red);
+		farbenGroup.add(blue);
+		farbenGroup.add(green);
+		farbenGroup.add(yellow);
+		farbenGroup.add(pink);
 
-		JMenuItem schwarz = new JMenuItem("Schwarz");
-		schwarz.setMnemonic('S');
-		schwarz.addActionListener(new ActionListener() {
+		JCheckBoxMenuItem selected = new JCheckBoxMenuItem("Selected");
+		selected.setMnemonic('T');
+		fileMenu.add(selected);
+		JRadioButtonMenuItem form = new JRadioButtonMenuItem("form");
+		form.setMnemonic('F');
+		fileMenu.add(form);
+		JRadioButtonMenuItem Rechteck = new JRadioButtonMenuItem("Rechteck");
+		Rechteck.setMnemonic('R');
+		fileMenu.add(Rechteck);
+		JRadioButtonMenuItem Quadrat = new JRadioButtonMenuItem("Quadrat");
+		Rechteck.setMnemonic('Q');
+		fileMenu.add(Quadrat);
+		JRadioButtonMenuItem Kreis = new JRadioButtonMenuItem("Kreis");
+		Kreis.setMnemonic('K');
+		fileMenu.add(Kreis);
+		JRadioButtonMenuItem Trapez = new JRadioButtonMenuItem("Trapez");
+		Trapez.setMnemonic('K');
+		fileMenu.add(Trapez);
+		JRadioButtonMenuItem Raute = new JRadioButtonMenuItem("Raute");
+		Raute.setMnemonic('K');
+		fileMenu.add(Raute);
+		ButtonGroup buttonGroup = new ButtonGroup();
+		buttonGroup.add(Rechteck);
+		buttonGroup.add(form);
+		buttonGroup.add(Quadrat);
+		buttonGroup.add(Kreis);
+		buttonGroup.add(Trapez);
+		buttonGroup.add(Raute);
+
+
+
+		formenPanel.addMouseListener(new MouseAdapter() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				formenPanel.setBackground(Color.BLACK);
+			public void mouseClicked(MouseEvent e) {
+				if (red.isSelected()) {
+					((FormenPanel)formenPanel).setColor(Color.red);
+				} else if (blue.isSelected()) {
+					((FormenPanel)formenPanel).setColor(Color.blue);
+				} else if (green.isSelected()) {
+					((FormenPanel)formenPanel).setColor(Color.green);
+				} else if (yellow.isSelected()) {
+					((FormenPanel)formenPanel).setColor(Color.yellow);
+				} else if (pink.isSelected()) {
+					((FormenPanel)formenPanel).setColor(Color.pink);
+				}
+				if (Rechteck.isSelected()) {
+					Point p = e.getPoint();
+					((FormenPanel)formenPanel).addRechteck(p);
+				} else if (Quadrat.isSelected()) {
+					Point p = e.getPoint();
+					((FormenPanel)formenPanel).addQuadrat(p);
+				} else if (Kreis.isSelected()) {
+					Point p = e.getPoint();
+					((FormenPanel)formenPanel).addKreis(p);
+				} else if (Trapez.isSelected()) {
+					Point p = e.getPoint();
+					((FormenPanel)formenPanel).addTrapez(p);
+				} else if (Raute.isSelected()) {
+					Point p = e.getPoint();
+					((FormenPanel)formenPanel).addRaute(p);
+				}
 			}
 		});
-		farbMenu.add(schwarz);
 
-		JMenuItem rot = new JMenuItem("Rot");
-		rot.setMnemonic('R');
-		rot.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				formenPanel.setBackground(Color.RED);
-			}
-		});
-		farbMenu.add(rot);
-
-		JMenuItem gruen = new JMenuItem("Gruen");
-		gruen.setMnemonic('G');
-		gruen.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				formenPanel.setBackground(Color.GREEN);
-			}
-		});
-		farbMenu.add(gruen);
-
-		JMenuItem blau = new JMenuItem("Blau");
-		blau.setMnemonic('B');
-		blau.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				formenPanel.setBackground(Color.BLUE);
-			}
-		});
-		farbMenu.add(blau);
-
-		JMenuItem gelb = new JMenuItem("Gelb");
-		gelb.setMnemonic('G');
-		gelb.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				formenPanel.setBackground(Color.YELLOW);
-			}
-		});
-		farbMenu.add(gelb);
 	}
 
 	public static void main(String[] args) {

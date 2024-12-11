@@ -3,17 +3,18 @@ package formen;
 import java.awt.*;
 
 public class Ellipse extends Form {
-	private final int width;
-	private final int height;
-
-	public Ellipse(int x, int y, int width, int height) {
-		super(x, y);
-		this.width = width;
-		this.height = height;
+	protected int w;
+	protected int h;
+	public Ellipse(int x, int y, int w, int h, Color color) {
+		super(x, y, color);
+		this.w = w;
+		this.h = h;
 	}
 
 	@Override
 	public void paint(Graphics g) {
-		this.drawOval(g, x, y, height + width, height);
+		g.setColor(color);
+		this.drawOval(g, x, y, w, h);
 	}
 }
+
