@@ -9,5 +9,6 @@ public class Dreieck extends Polygon {
 		}
 		this.sides = sides;
 		this.angle = angle;
+		
 	}
 }
