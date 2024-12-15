@@ -20,6 +20,8 @@ public class MainWindow extends JFrame {
 	private final ArrayList<MemoryButton> buttons = new ArrayList<>();
 	private MemoryButton lastButton = null;
 
+	private final ArrayList<ImageIcon> icons = loadImages();
+
 	public MainWindow(String title) {
 		super(title);
 
@@ -80,8 +82,8 @@ public class MainWindow extends JFrame {
 
 	private void generatePairs(int pairs) {
 		for (int i = 0; i < pairs; i++) {
-			buttons.add(new MemoryButton(i));
-			buttons.add(new MemoryButton(i));
+			buttons.add(new MemoryButton(icons.get(i % icons.size())));
+			buttons.add(new MemoryButton(icons.get(i % icons.size())));
 		}
 
 		Collections.shuffle(buttons);
@@ -95,7 +97,7 @@ public class MainWindow extends JFrame {
 	private void onMemoryButtonClicked(MemoryButton button) {
 		if (button.isFound()) return;
 
-		button.setText(String.valueOf(button.getValue()));
+		button.setIcon(button.getValue());
 
 		if (lastButton == null) {
 			lastButton = button;
@@ -119,8 +121,8 @@ public class MainWindow extends JFrame {
 			}
 
 			Timer timer = new Timer(1500, e -> {
-				lastButton.setText("");
-				button.setText("");
+				lastButton.setIcon(null);
+				button.setIcon(null);
 				lastButton = null;
 
 				playersList.setSelectedIndex((playersList.getSelectedIndex() + 1) % players.size());
@@ -137,6 +139,22 @@ public class MainWindow extends JFrame {
 
 	private void updateCurrentPlayer() {
 		currentPlayerLabel.setText("Current Player: " + playersList.getSelectedValue() + " Score: " + players.get(playersList.getSelectedValue()));
+	}
+
+	private ArrayList<ImageIcon> loadImages() {
+		ArrayList<ImageIcon> icons = new ArrayList<>();
+		icons.add(new ImageIcon("images/dice-multiple.png"));
+		icons.add(new ImageIcon("images/ghost.png"));
+		icons.add(new ImageIcon("images/home-city.png"));
+		icons.add(new ImageIcon("images/ice-cream.png"));
+		icons.add(new ImageIcon("images/lightbulb-on.png"));
+		icons.add(new ImageIcon("images/lighthouse.png"));
+		icons.add(new ImageIcon("images/television-classic.png"));
+		icons.add(new ImageIcon("images/train.png"));
+		icons.add(new ImageIcon("images/tshirt-v.png"));
+		icons.add(new ImageIcon("images/weather-lightning-rainy.png"));
+
+		return icons;
 	}
 
 	public static void main(String[] args) {

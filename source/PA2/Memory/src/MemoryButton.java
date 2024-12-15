@@ -1,10 +1,10 @@
 import javax.swing.*;
 
 public class MemoryButton extends JButton {
-	private int value = 0;
+	private ImageIcon value = null;
 	private boolean found = false;
 
-	public MemoryButton(int value) {
+	public MemoryButton(ImageIcon value) {
 		this.value = value;
 	}
 
@@ -16,7 +16,7 @@ public class MemoryButton extends JButton {
 		this.found = found;
 	}
 
-	public int getValue() {
+	public ImageIcon getValue() {
 		return value;
 	}
 }
