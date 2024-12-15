@@ -1,13 +1,25 @@
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Vector;
 
 public class MainWindow extends JFrame {
 	private JPanel mainPanel;
-	private JList occurrenceList;
-	private JButton auswertenButton;
+	private JButton evaluateButton;
 	private JTextArea inputArea;
-	private JTable numberTable;
+	private JList<Integer> top10List;
+	private JTable numbersTable;
+
+	private final HashMap<Integer, Integer> frequencies = new HashMap<>(); // <Zahl, Frequenz>
+	private final DefaultTableModel model = new DefaultTableModel(new String[]{"Zahl", "Frequenz"}, 0) {
+		@Override
+		public boolean isCellEditable(int row, int column) {
+			return false;
+		}
+	};
 
 	public MainWindow() {
 		setTitle("Zahlen Auswerten");
@@ -15,45 +27,42 @@ public class MainWindow extends JFrame {
 		setSize(500, 400);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-		auswertenButton.addActionListener(e -> {
-			String[] input = Arrays.stream(inputArea.getText().replaceAll("([^\\d.]+|\\s{2,}|\\s\\.)", " ").replaceAll("( \\.|\\s{2,}|\\. )", " ").split(" ")).filter(s -> !s.isEmpty()).toArray(String[]::new);
-			int[] numbers = new int[input.length];
-			for (int i = 0; i < input.length; i++) {
-				numbers[i] = Integer.parseInt(input[i]);
+		numbersTable.setModel(model);
+		numbersTable.setAutoCreateRowSorter(true);
+
+		inputArea.setLineWrap(true);
+		inputArea.setWrapStyleWord(true);
+
+
+		evaluateButton.addActionListener(e -> {
+			clearOutputs();
+
+			String input = inputArea.getText();
+			if (input.isEmpty()) {
+				return;
 			}
 
-			HashMap<Integer, Integer> occurrencesMap = new HashMap<>();
-			for (int number : numbers) {
-				if (occurrencesMap.containsKey(number)) {
-					occurrencesMap.put(number, occurrencesMap.get(number) + 1);
-				} else {
-					occurrencesMap.put(number, 1);
-				}
+			String[] numbers = input.replaceAll("([^\\d.]+|\\s{2,}|\\s\\.)", " ").replaceAll("( \\.|\\s{2,}|\\. )", " ").split(" ");
+
+			for (String number : Arrays.stream(numbers).filter(s -> !s.isEmpty()).toArray(String[]::new)) {
+				int numberInt = Integer.parseInt(number);
+				frequencies.put(numberInt, frequencies.getOrDefault(numberInt, 0) + 1);
 			}
 
-			occurrenceList.setListData(
-				occurrencesMap
-					.entrySet()
-					.stream()
-					.sorted((e1, e2) -> e2.getValue() - e1.getValue())
-					.limit(10).map(en -> en.getKey())
-					.toArray()
-			);
+			for (int number : frequencies.keySet()) {
+				model.addRow(new Object[]{number, frequencies.get(number)});
+			}
+
+			top10List.setListData(new Vector<>(frequencies.entrySet().stream().sorted((e1, e2) -> {
+				return e2.getValue() - e1.getValue();
+			}).limit(10).map(Map.Entry::getKey).toList()));
 		});
+	}
 
-//1 1 1
-//2 2 2
-//3 3 3
-//4 4 4 4
-//5 5 5 5 5
-//6 6
-//7 7 7
-//8 8 8 8
-//9 9 9
-//10 10 10 10 10
-//11 11 11 11
-
-		pack();
+	private void clearOutputs() {
+		frequencies.clear();
+		model.setRowCount(0);
+		top10List.setListData(new Vector<Integer>());
 	}
 
 	public static void main(String[] args) {
